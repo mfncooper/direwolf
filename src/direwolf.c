@@ -1137,7 +1137,7 @@ int main (int argc, char *argv[])
 	kissnet_init (&misc_config);
 
 #if (USE_AVAHI_CLIENT|USE_MACOS_DNSSD)
-	if (misc_config.kiss_port[0] > 0 && misc_config.dns_sd_enabled)
+	if (misc_config.dns_sd_enabled)
 	  dns_sd_announce(&misc_config);
 #endif
 
@@ -1692,6 +1692,10 @@ static void cleanup_linux (int x)
 {
 	text_color_set(DW_COLOR_INFO);
 	dw_printf ("\nQRT\n");
+#if (USE_AVAHI_CLIENT|USE_MACOS_DNSSD)
+	if (misc_config.dns_sd_enabled)
+	  dns_sd_term ();
+#endif
 	log_term ();
 	ptt_term ();
 	dwgps_term ();
